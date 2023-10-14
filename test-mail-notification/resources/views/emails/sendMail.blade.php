@@ -10,6 +10,7 @@
 
     <h1>This is Send Mail Blade</h1>
     <a href="{{route('sendMail')}}"><button>Send Mail</button></a>
+    <a href="{{route('emailNotification')}}"><button>SendMail Notification</button></a>
 
 </body>
 </html>

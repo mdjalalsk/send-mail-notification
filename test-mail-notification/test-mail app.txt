@@ -3,3 +3,72 @@ appname:test-laravel-send-mail
 pass :aphl tblo kxuv njoh
 
 mdjalalsk02@gmail.com
+
+
+
+// notification send step
+
+** php artisan notifications:table    //for  create notification table **
+** php artisan migrate
+** php artisan make:notification  sendEmailNotification //for send email notification file
+
+namespace App\Http\Controllers;
+
+use App\Mail\jalalskmail;
+
+use Illuminate\Support\Facades\Mail;
+//some seting email notifications file
+ private $details;
+    /**
+     * Create a new notification instance.
+     */
+    public function __construct($details)
+    {
+        $this->details = $details;
+    }
+
+//change and setting toMail method
+  public function toMail(object $notifiable): MailMessage
+    {
+        return (new MailMessage)
+                    ->greeting($this->details['greeting'])
+                    ->line($this->details['body'])
+                    ->action($this->details['actionText'], $this->details['actionUrl'])
+                    ->line($this->details['lastLine']);
+    }
+
+
+
+//then make controller  for send email notification
+php artisan make:controller sendEmailNotificationController
+
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\User;
+
+use Illuminate\Support\Facades\Notification; // Added 'use' statement
+
+use App\Notifications\sendEmailNotification;
+class sendEmailNotificationController extends Controller
+{
+    public function sendEmailNotification()
+    {
+        $user=User::all();
+        $details = [
+            'greeting'=>" Hello Developer",
+            'body'=>" I am very exciting for meting with you",
+            'actionText'=>" Share your knowledge",
+            'actionUrl'=>" /",
+            'lastLine'=>" Thanks!",
+        ];
+
+     Notification::send($user,new SendEmailNotification($details));
+}
+}
+
+
+
+//ceate notification route for wep.php file
+Route::get('/emailNotification',[sendEmailNotificationController::class,'sendEmailNotification'] )->name('emailNotification');

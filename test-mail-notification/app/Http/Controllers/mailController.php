@@ -8,9 +8,13 @@ use Illuminate\Support\Facades\Mail;
 class mailController extends Controller
 {
 
+    public function index(){
+       return view('emails.sendMail');
+    }
+
     public function sendMail(){
     $mail=new jalalskmail();
-    Mail::to("jalal@ts-integration.net")->send($mail);
+    Mail::to("mdjalalsk018@gmail.com")->send($mail);
 
         return "Email sent successfully";
     }

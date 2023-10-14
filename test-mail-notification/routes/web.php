@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\mailController;
+use App\Http\Controllers\sendEmailNotificationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,7 +17,26 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('emails.sendMail');
+    return view('welcome');
+});
+//send email for user
+Route::get('/email', [mailController::class,'index'])->name('email');
+Route::get('/sendMail', [mailController::class,'sendMail'])->name('sendMail');
+
+
+//send emailnotification for user
+Route::get('/emailNotification',[sendEmailNotificationController::class,'sendEmailNotification'] )->name('emailNotification');
+
+
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/sendMail', [mailController::class,'sendMail'])->name('sendMail');
+require __DIR__.'/auth.php';
