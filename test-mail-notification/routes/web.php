@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\mailController;
+use App\Http\Controllers\PDFController;
 use App\Http\Controllers\sendEmailNotificationController;
 use Illuminate\Support\Facades\Route;
 
@@ -27,6 +28,8 @@ Route::get('/sendMail', [mailController::class,'sendMail'])->name('sendMail');
 //send emailnotification for user
 Route::get('/emailNotification',[sendEmailNotificationController::class,'sendEmailNotification'] )->name('emailNotification');
 
+//pdf generate  for user
+Route::get('generate-pdf', [PDFController::class, 'generatePDF'])->name('generate-pdf');
 
 
 Route::get('/dashboard', function () {

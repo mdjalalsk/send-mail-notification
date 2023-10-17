@@ -72,3 +72,88 @@ class sendEmailNotificationController extends Controller
 
 //ceate notification route for wep.php file
 Route::get('/emailNotification',[sendEmailNotificationController::class,'sendEmailNotification'] )->name('emailNotification');
+
+
+//pdf generate
+1. install a pakage for pdf generate
+composer require barryvdh/laravel-dompdf
+
+.2useing tinker and inser dummy users for users table
+
+php artisan tinker
+
+User::factory()->count(10)->create()
+
+3. create a controller for pdf generate
+
+php artisan make:controller PDFController
+
+inside controller type flowing code
+
+<?php
+
+namespace App\Http\Controllers;
+use App\Models\User;
+// use Barryvdh\DomPDF\PDF;
+
+use PDF;
+
+class PDFController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function generatePDF()
+    {
+        $users = User::get();
+
+        $data = [
+            'title' => 'Welcome to skit.com',
+            'date' => date('m/d/Y'),
+            'users' => $users
+        ];
+
+        $pdf = PDF::loadView('pdf.myPDF', $data);
+
+        return $pdf->download('skit.pdf');
+    }
+}
+
+4.create view which text and documet yoy will print inside pdf file
+for example flowing code
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Laravel 10 Generate PDF Example - ItSolutionStuff.com</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+    <h1>{{ $title }}</h1>
+    <p>{{ $date }}</p>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+    tempor incididunt ut labore et dolore magna aliqua.</p>
+
+    <table class="table table-bordered">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+        </tr>
+        @foreach($users as $user)
+        <tr>
+            <td>{{ $user->id }}</td>
+            <td>{{ $user->name }}</td>
+            <td>{{ $user->email }}</td>
+        </tr>
+        @endforeach
+    </table>
+
+</body>
+</html>
+.5 create route for generate pdf
+
+
+Route::get('generate-pdf', [PDFController::class, 'generatePDF']);
+
