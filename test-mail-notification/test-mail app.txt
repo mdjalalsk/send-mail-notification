@@ -157,3 +157,53 @@ for example flowing code
 
 Route::get('generate-pdf', [PDFController::class, 'generatePDF']);
 
+//how to add QR code in laravel project
+1. install a pakage for scan QR code
+composer require simplesoftwareio/simple-qrcode
+ 2. create  a conteoller
+ php artisan make:controller QRCodeController
+ enter flowing  code
+
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+
+
+class QRCodeController extends Controller
+{
+    public function generateQRCode($text)
+    {
+        // Default values for email and phone,text
+        $text = 'Welcome to the QRCode ';
+        $email = 'example@example.com';
+        $phone = '123456789';
+
+        $vCardData = "BEGIN:VCARD\n"
+                   . "VERSION:3.0\n"
+                   . "EMAIL:$email\n"
+                   . "TEL:$phone\n"
+                   . "END:VCARD";
+
+        $data = "$vCardData\nText:$text";
+
+        $qrCode = QrCode::size(300)->generate($data);
+        return view('qr-code', compact('qrCode'));
+    }
+
+}
+3. create a Qr code view
+<!DOCTYPE html>
+<html>
+<head>
+    <title>QR Code</title>
+</head>
+<body>
+    <h2>Contact Information QR Code</h2>
+    <img src="data:image/png;base64,{{ base64_encode($qrCode) }}" alt="QR Code">
+</body>
+</html>
+
+4. create a Qr code  route

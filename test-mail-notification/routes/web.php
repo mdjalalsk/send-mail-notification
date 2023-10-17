@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\mailController;
 use App\Http\Controllers\PDFController;
+use App\Http\Controllers\QRCodeController;
 use App\Http\Controllers\sendEmailNotificationController;
 use Illuminate\Support\Facades\Route;
 
@@ -30,6 +31,10 @@ Route::get('/emailNotification',[sendEmailNotificationController::class,'sendEma
 
 //pdf generate  for user
 Route::get('generate-pdf', [PDFController::class, 'generatePDF'])->name('generate-pdf');
+
+//Qr code generator for user
+Route::get('/generate-qr-code', [QRCodeController::class, 'generateQRCode'])->name('generate-qr-code');
+
 
 
 Route::get('/dashboard', function () {

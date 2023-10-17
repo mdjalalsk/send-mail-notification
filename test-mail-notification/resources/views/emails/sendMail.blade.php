@@ -11,7 +11,8 @@
     <h1>This is Send Mail Blade</h1>
     <a href="{{route('sendMail')}}"><button>Send Mail</button></a>
     <a href="{{route('emailNotification')}}"><button>SendMail Notification</button></a>
-    <a href="{{route('generate-pdf')}}"><button>PDF Generate</button></a>
+    <a href="{{route('generate-pdf')}}" target="_blank"><button>PDF Generate</button></a>
+    <a href="{{route('generate-qr-code')}}" target="_blank"><button>QR code Generate</button></a>
 
 </body>
 </html>
